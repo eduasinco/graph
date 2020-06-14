@@ -1,6 +1,8 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
-const schema = require('./squema/squema');
+const userSchema = require('./src/user/mutation');
+const schema = require('./src/schema');
+
 const mongoose = require('mongoose');
 
 const app = express();
@@ -16,12 +18,8 @@ app.use('/graphql', graphqlHTTP({
   graphiql: true
 }));
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin.router');
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 
 module.exports = app
+
