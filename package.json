@@ -10,7 +10,7 @@
     "admin-bro-expressjs": "^2.0.5",
     "admin-bro-mongoose": "^0.5.2",
     "admin-bro-typeorm": "^0.1.6-alpha.9",
-    "body-parser": "^1.19.0",
+    "bcrypt": "^5.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "^4.16.4",
@@ -24,7 +24,15 @@
     "mongoose": "^5.9.18",
     "mongoose-double": "0.0.1",
     "morgan": "~1.9.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "peer": "^0.5.3",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.1",
+    "client-sessions": "^0.8.0",
+    "csurf": "^1.9.0",
+    "njwt": "^0.4.0",
+    "secure-random": "^1.1.1"
   }
 }
