@@ -1,6 +1,6 @@
 const graphql = require('graphql');
-const FoodPost = require('./data')
-const FoodPostType = require('./type')
+const Order = require('./data')
+const OrderType = require('./type')
 
 
 const {
@@ -14,28 +14,27 @@ const {
     GraphQL
 } = graphql;
 
-const foodPostQuery = {
-    foodPost: {
-        type: FoodPostType,
+const orderQuery = {
+    order: {
+        type: OrderType,
         args: {id: {type: GraphQLID}},
         resolve(parent, args) {
-            return FoodPost.findById(args.id)
+            return Order.findById(args.id)
         }
     },
-    foods: {
-        type: GraphQLList(FoodPostType),
+    my_orders: {
+        type: GraphQLList(OrderType),
         resolve(parent, args, context) {
-            return FoodPost.find({});
+            return Order.find({owner_id: context.user.id});
         }
     },
-    userFoods: {
-        type: GraphQLList(FoodPostType),
+    user_orders: {
+        type: GraphQLList(OrderType),
         args: {id: {type: GraphQLID}},
         resolve(parent, args) {
-            return FoodPost.find({ownerId: args.id});
+            return Order.find({owner_id: args.id});
         }
     },
 }
 
-
-module.exports = foodPostQuery
+module.exports = orderQuery

@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const User = require('../user/data')
+const {User, ROLE} = require('../user/data')
 const UserType = require('../user/type')
 
 const {

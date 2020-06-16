@@ -1,7 +1,7 @@
 const nJwt = require("njwt");
 
 const auth = require('./auth');
-const User = require('./src/user/data');
+const {User, ROLE} = require('./src/user/data');
 const settings = require("./settings");
 
 /**
@@ -14,8 +14,17 @@ module.exports.loginRequired = (req, res, next) => {
     if (req.user) {
         return next();
     }
-    res.send("You are not logged in")
+    res.send({"login_error": "You are not logged in"})
 };
+
+module.exports.authRole = (role) => {
+    return (req, res, next) => {
+        if (req.user.role === role) {
+            return next();
+        }
+        res.status(401).send("You are not allowed")
+    };
+}
 
 /**
  * Given a user object:

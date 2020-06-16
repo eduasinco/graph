@@ -16,7 +16,7 @@ let args = {
     formatted_address: {type: GraphQLInt},
     ownerId: {type: GraphQLString},
 }
-const foodPostMutation = {
+const  foodPostMutation = {
     addFoodPost: {
         type: FoodPostType,
         args: args,
@@ -31,10 +31,7 @@ const foodPostMutation = {
     },
     editFoodPost: {
         type: FoodPostType,
-        args: {
-            id: {type: GraphQLString},
-            args
-        },
+        args: args,
         resolve(parent, args) {
             let foodPost = new FoodPost({
                 plate_name: args.plate_name,

@@ -3,13 +3,13 @@ const graphqlHTTP = require('express-graphql');
 const schema = require('./src/schema');
 const bodyParser = require("body-parser");
 const sessions = require("client-sessions");
-const csurf = require("csurf");
 const auth = require("./auth");
 
 const settings = require("./settings");
 
 const adminRouter = require('./routes/admin.router');
 const userRouter = require('./routes/user');
+const foodPostRouter = require('./routes/foodPost');
 
 const mongoose = require('mongoose');
 
@@ -19,12 +19,6 @@ mongoose.connect('mongodb://localhost/db')
 mongoose.connection.once('open', () => {
   console.log('conneted to database');
 });
-
-// bind express with graphql
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true
-}));
 
 app.use(sessions({
   cookieName: "session",
@@ -44,5 +38,11 @@ app.use(auth.loadUserFromSession);
 
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
+app.use(auth.loginRequired)
+app.use('/food', foodPostRouter);
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true
+}));
 
 module.exports = app
