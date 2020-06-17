@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const foodPostSchema = new Schema({
-    ownerId: String,
+    owner_id: String,
     plate_name: String,
     formatted_address: String,
     place_id: String,

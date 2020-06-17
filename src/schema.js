@@ -5,6 +5,8 @@ const foodPostQuery = require('./foodPost/query')
 const foodPostMutation = require('./foodPost/mutation')
 const orderQuery = require('./orders/query')
 const orderMutation = require('./orders/mutation')
+const chatQuery = require('./chat/query')
+// const chatMutation = require('./chat/mutation')
 
 const {
     GraphQLObjectType,
@@ -16,7 +18,8 @@ const Mutation = new GraphQLObjectType({
     fields: {
         ...userMutation,
         ...foodPostMutation,
-        ...orderMutation
+        ...orderMutation,
+        // ...chatMutation
     }
 })
 
@@ -25,7 +28,8 @@ const Query = new GraphQLObjectType({
     fields: {
         ...userQuery,
         ...foodPostQuery,
-        ...orderQuery
+        ...orderQuery,
+        ...chatQuery
     }
 })
 
