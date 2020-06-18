@@ -39,6 +39,7 @@ app.use(auth.loadUserFromSession);
 
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
+// TODO dont forget user login required
 // app.use(auth.loginRequired)
 app.use('/food', foodPostRouter);
 app.use('/graphql', graphqlHTTP({

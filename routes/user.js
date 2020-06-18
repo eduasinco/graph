@@ -171,36 +171,47 @@ router.get('/profile_detail/:id', auth.loginRequired, (req, res) => {
     })
 })
 
-router.get('/edit_profile',
+router.post('/edit_profile',
     auth.loginRequired,
     upload,
     (req, res) => {
-    User.findOneAndUpdate({"_id": req.user.id},
-        {"$set":
-                {...req.body,
-                    profile_image: req.files.profile_image ? req.files.profile_image[0].path: "",
-                    background_image: req.files.background_image ? req.files.background_image[0].path: ""
-                }
-        })
-        .exec((err, user) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json(err);
-        } else {
-            res.status(200).json(user);
+        if (req.files.profile_image) {
+            req.body.profile_image = req.files.profile_image[0].path
         }
-    });
+        if (req.files.background_image) {
+            req.body.background_image = req.files.background_image[0].path
+        }
+        req.body.profile_image =
+        User.findOneAndUpdate({"_id": req.user.id},
+            {"$set": req.body,}, {new: true},)
+            .then((data) => {
+                res.status(201).json(data);
+            }).catch((error) => {
+                res.status(500).json({message: 'Some Error!'});
+                console.log(error);
+            });
 })
 
-router.get('/delete_user_images/:profile', auth.loginRequired, (req, res) => {
-    User.findOneAndUpdate({"_id": req.user.id}, {"$set": req.body}).exec((err, user) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json(err);
-        } else {
-            res.status(200).json(user);
-        }
-    });
+router.delete('/delete_user_images/:profile', auth.loginRequired, (req, res) => {
+    if (req.params.profile === "1"){
+        req.user.profile_image = undefined;
+    } else if (req.params.profile === "0"){
+        req.user.background_image = undefined;
+    }
+    req.user
+        .save()
+        .then(result => {
+            res.status(201).json(result);
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+})
+
+router.get('/my_profile', auth.loginRequired, (req, res) => {
+    res.status(201).json(req.user);
 })
 
 router.post("/change_password", auth.loginRequired, (req, res) => {

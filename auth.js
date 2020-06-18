@@ -78,7 +78,7 @@ module.exports.loadUserFromSession = (req, res, next) => {
 
             // Remove the password hash from the User object.  This way we don't
             // accidentally leak it.
-            user.password = undefined;
+            // user.password = undefined;
 
             // Here is where we store the user object in the current request for
             // developer usage.  If the user wasn't found, these values will be set to a
