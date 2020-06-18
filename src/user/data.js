@@ -12,6 +12,7 @@ const userSchema = new Schema({
     password: {type: String, required: true},
     role: {type: String, required: true, enum: Object.values(ROLE)},
     isActive: {type: Boolean, required: true, default: false},
+    verification_n: {type: Number},
 });
 
 module.exports = {
