@@ -31,6 +31,7 @@ app.use(sessions({
     secure: settings.SESSION_SECURE_COOKIES
   }
 }));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json())
 // app.use(csurf());
@@ -38,7 +39,7 @@ app.use(auth.loadUserFromSession);
 
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
-app.use(auth.loginRequired)
+// app.use(auth.loginRequired)
 app.use('/food', foodPostRouter);
 app.use('/graphql', graphqlHTTP({
   schema,
