@@ -171,7 +171,7 @@ router.get('/profile_detail/:id', auth.loginRequired, (req, res) => {
     })
 })
 
-router.post('/edit_profile',
+router.patch('/edit_profile',
     auth.loginRequired,
     upload,
     (req, res) => {
@@ -214,18 +214,17 @@ router.get('/my_profile', auth.loginRequired, (req, res) => {
     res.status(201).json(req.user);
 })
 
-router.post("/change_password", auth.loginRequired, (req, res) => {
-    if (!req.user || !bcrypt.compareSync(req.body.password, req.user.password)) {
-        return res.send({
-            error: "Incorrect old password.",
-        });
+router.patch("/password_change", auth.loginRequired, (req, res) => {
+    if (!req.user || !bcrypt.compareSync(req.body.old_password, req.user.password)) {
+        return res.send({error: "Incorrect password."});
     } else {
-        req.user.password = bcrypt.hashSync(req.body.password, settings.BCRYPT_WORK_FACTOR);
+        req.user.password = bcrypt.hashSync(req.body.new_password, settings.BCRYPT_WORK_FACTOR);
         req.user
             .save()
             .then(result => {
-                auth.createUserSession(req, res, user);
-                console.log(result);
+                if (req.session) {
+                    req.session.reset();
+                }
                 res.status(201).json({
                     message: "Handling POST requests to /products",
                     createdProduct: result
