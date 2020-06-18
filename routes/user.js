@@ -5,20 +5,8 @@ const bcrypt = require('bcrypt')
 const auth = require("../auth");
 const settings = require("../settings");
 const nodemailer = require('nodemailer');
-const smtpTransport = require('nodemailer-smtp-transport');
 const {email, password} = require('../config');
-const multer = require('multer');
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './uploads/profile_images/');
-    },
-    filename: function(req, file, cb) {
-        cb(null, new Date().toISOString() + file.originalname);
-    }
-});
-
-const upload = multer({storage: storage})
-
+const upload = require('../uploads/upload')
 
 router.post("/register", (req, res) => {
     req.body.password = bcrypt.hashSync(req.body.password, settings.BCRYPT_WORK_FACTOR);
@@ -183,8 +171,17 @@ router.get('/profile_detail/:id', auth.loginRequired, (req, res) => {
     })
 })
 
-router.get('/edit_profile', auth.loginRequired, upload.single('profile_image'), (req, res) => {
-    User.findOneAndUpdate({"_id": req.user.id}, {"$set": {...req.body, profile_image: req.file.path}})
+router.get('/edit_profile',
+    auth.loginRequired,
+    upload,
+    (req, res) => {
+    User.findOneAndUpdate({"_id": req.user.id},
+        {"$set":
+                {...req.body,
+                    profile_image: req.files.profile_image ? req.files.profile_image[0].path: "",
+                    background_image: req.files.background_image ? req.files.background_image[0].path: ""
+                }
+        })
         .exec((err, user) => {
         if (err) {
             console.log(err);
