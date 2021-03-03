@@ -35,7 +35,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "peer": "^0.5.3",
-    "pug": "2.0.0-beta11",
+    "pug": "3.0.1",
     "secure-random": "^1.1.1"
   }
 }
